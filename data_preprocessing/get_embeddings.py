@@ -33,7 +33,8 @@ def main():
         texts,
         padding=True,
         truncation=True,
-        return_tensors="pt"  # Return PyTorch tensors
+        return_tensors="pt",
+        max_length=128
     ).to(DEVICE)
 
     with torch.no_grad():
