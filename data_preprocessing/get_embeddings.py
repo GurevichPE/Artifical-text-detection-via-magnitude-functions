@@ -6,20 +6,18 @@ from transformers import AutoTokenizer, AutoModel
 import torch
 import pandas as pd
 
-# Load model and tokenizer (e.g., BERT)
 
+DATA_PATH = "/workspace/mnt/local/data/pgurevich/magnitude/small_data.csv"
+SAVEDIR = "/workspace/mnt/local/data/pgurevich/magnitude"
+TEXT_COLUMN = "text"
+LABEL_COLUMN = "label"
+DEVICE = torch.device(f"cuda:0" if torch.cuda.is_available() else "cpu")
+MAX_LENGTH = 128
 
 
 def main():
     print("START")
 
-    DATA_PATH = "/workspace/mnt/local/data/pgurevich/magnitude/small_data.csv"
-    SAVEDIR = "/workspace/mnt/local/data/pgurevich/magnitude"
-
-    TEXT_COLUMN = "text"
-    LABEL_COLUMN = "label"
-
-    DEVICE = torch.device(f"cuda:0" if torch.cuda.is_available() else "cpu")
 
     data = pd.read_csv(DATA_PATH)
     texts = data[TEXT_COLUMN].tolist()
@@ -34,7 +32,7 @@ def main():
         padding=True,
         truncation=True,
         return_tensors="pt",
-        max_length=128
+        max_length=MAX_LENGTH
     ).to(DEVICE)
 
     with torch.no_grad():
