@@ -10,6 +10,7 @@ The aim of the project is to analyze the human-written and AI-generated texts us
 To create the python environment run:
 
 ```
+#!bash
 conda env create -f environment.yml
 ```
 
