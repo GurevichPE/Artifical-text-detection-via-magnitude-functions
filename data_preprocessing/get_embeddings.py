@@ -12,7 +12,7 @@ SAVEDIR = "/workspace/mnt/local/data/pgurevich/magnitude"
 TEXT_COLUMN = "text"
 LABEL_COLUMN = "label"
 DEVICE = torch.device(f"cuda:0" if torch.cuda.is_available() else "cpu")
-MAX_LENGTH = 128
+MAX_LENGTH = 256
 
 
 def main():
