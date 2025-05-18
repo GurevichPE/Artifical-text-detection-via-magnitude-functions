@@ -18,7 +18,7 @@ def logreg(reals: np.ndarray,
     """
     X = np.vstack([reals, gens])
     y = np.zeros(len(reals) + len(gens), dtype=int)
-    y[len(reals):] = 1
+    y[len(reals):] = 0
 
     skf = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=21)
     aucs = []
@@ -62,7 +62,7 @@ def logreg_and_find_generated_misclassifications(
     """
     X = np.vstack([reals, gens])
     y = np.zeros(len(reals) + len(gens), dtype=int)
-    y[len(reals):] = 1
+    y[len(reals):] = 0
 
     skf = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=21)
     aucs = []

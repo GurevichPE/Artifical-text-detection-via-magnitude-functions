@@ -12,8 +12,7 @@ SAVEDIR = "/workspace/mnt/local/data/pgurevich/magnitude"
 TEXT_COLUMN = "text"
 LABEL_COLUMN = "label"
 DEVICE = torch.device(f"cuda:0" if torch.cuda.is_available() else "cpu")
-MAX_LENGTH = 256
-
+MAX_LENGTH = 288
 
 def main():
     print("START")
@@ -46,8 +45,8 @@ def main():
     print("FINISHED")
     print(f"Embeddings shape: {token_embeddings.shape}")
 
-    torch.save(token_embeddings, f"{SAVEDIR}/embeddings.pt")
-    torch.save(labels, f"{SAVEDIR}/labels.pt")
+    torch.save(token_embeddings, f"{SAVEDIR}/embeddings_{MAX_LENGTH}.pt")
+    torch.save(labels, f"{SAVEDIR}/labels_{MAX_LENGTH}.pt")
 
 
 if __name__ == "__main__":

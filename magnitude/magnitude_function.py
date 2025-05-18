@@ -1,6 +1,7 @@
 # magnitude_function.py
 import numpy as np
 import torch
+from tqdm.auto import tqdm
 import scipy.spatial.distance as sdist
 from typing import Union
 from scipy.spatial.distance import cdist
@@ -12,17 +13,24 @@ def calculate_magnitude(points: Union[np.ndarray, torch.Tensor], metric: str) ->
     Z = np.exp(-dists)
     return float(np.sum(np.linalg.inv(Z)))
 
-def calculate_magnitude_function(
-    points: Union[np.ndarray, torch.Tensor],
-    metric: str,
-    T: np.ndarray
-) -> np.ndarray:
-    if isinstance(points, torch.Tensor):
-        points = points.numpy()
-    mags = np.zeros(len(T), dtype=float)
-    for i, t in enumerate(T):
-        mags[i] = calculate_magnitude(t * points, metric)
-    return mags
+def _instance(obj):
+    return obj
+
+def calculate_magnitude_function(points:np.ndarray|torch.Tensor, metric:str, T:np.ndarray, verbose=True) -> np.ndarray:
+    magnitudes = np.zeros_like(T)
+    if verbose:
+        tq = tqdm
+    else:
+        tq = _instance
+
+    for i in tq(range(len(T))):
+        t = T[i]
+        t_points = t * points
+        mag = calculate_magnitude(t_points, metric)
+        magnitudes[i] = mag
+
+    return magnitudes
+
 
 def calculate_dimension(magnitudes: np.ndarray, t: np.ndarray) -> np.ndarray:
     logt = np.log(t)
