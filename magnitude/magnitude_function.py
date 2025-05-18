@@ -14,9 +14,17 @@ def calculate_magnitude(points:np.ndarray|torch.Tensor, metric:str) -> float:
     return np.sum(Z_inv)
 
 
-def calculate_magnitude_function(points:np.ndarray|torch.Tensor, metric:str, T:np.ndarray) -> np.ndarray:
+def _instance(obj):
+    return obj
+
+def calculate_magnitude_function(points:np.ndarray|torch.Tensor, metric:str, T:np.ndarray, verbose=True) -> np.ndarray:
     magnitudes = np.zeros_like(T)
-    for i in tqdm(range(len(T))):
+    if verbose:
+        tq = tqdm
+    else:
+        tq = _instance
+
+    for i in tq(range(len(T))):
         t = T[i]
         t_points = t * points
         mag = calculate_magnitude(t_points, metric)

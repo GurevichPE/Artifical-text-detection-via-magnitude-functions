@@ -13,7 +13,8 @@ def main():
                         # 'embeddings' for embeddings or
                         # 'both' for concatenated embeddings and magnitudes
 
-    LEN_GRID = list(range(64, 321, 32))
+    LEN_GRID = [288]
+    N_STEPS = 300
     
     labels, data = load_data(LABELS_PATH, DATA_PATH)
     aucs = []
@@ -21,7 +22,7 @@ def main():
 
     for n in tqdm(LEN_GRID):
         if MODE == 'magnitude':
-            with open(f"{MAGNITUDE_PATH}/magnitude_f_{n}.pkl", 'rb') as f:
+            with open(f"{MAGNITUDE_PATH}/magnitude_f_{n}_{N_STEPS}_steps.pkl", 'rb') as f:
                 mags = pkl.load(f)
             mags = np.array(mags)
         elif MODE == 'embeddings':
@@ -29,7 +30,7 @@ def main():
             mags = mags.mean(dim=1).numpy()
 
         elif MODE == 'both':
-            with open(f"{MAGNITUDE_PATH}/magnitude_f_{n}.pkl", 'rb') as f:
+            with open(f"{MAGNITUDE_PATH}/magnitude_f_{n}_{N_STEPS}_steps.pkl", 'rb') as f:
                 mags = pkl.load(f)
             mags = np.array(mags)
             embs = torch.load(f"{MAGNITUDE_PATH}/embeddings_{n}.pt")
@@ -38,7 +39,7 @@ def main():
 
 
         auc, mistake = logreg_and_find_generated_misclassifications(
-            mags,  labels, data, pca =False, n_splits=6, max_iter=1000
+            mags,  labels, data, pca=False, n_splits=6, max_iter=1000
         )
 
         aucs.append(auc)
@@ -50,7 +51,7 @@ def main():
         "len_grid" : LEN_GRID
     }
 
-    with open(f"{SAVEDIR}/clf_results_{MODE}.pkl", "wb") as f:
+    with open(f"{SAVEDIR}/clf_results_{MODE}_final.pkl", "wb") as f:
         pkl.dump(final_result, f)
 
 
